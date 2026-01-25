@@ -29,8 +29,11 @@ const EventCard = ({
   location,
   date,
   time,
-}: Pick<EventDTO, 'title' | 'image' | 'slug' | 'location' | 'date' | 'time'>) => {
-  
+}: Pick<
+  EventDTO,
+  'title' | 'image' | 'slug' | 'location' | 'date' | 'time'
+>) => {
+
   return (
     <Link href={`/events/${slug}`} id="event-card">
       <Image
