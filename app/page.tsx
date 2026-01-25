@@ -3,7 +3,9 @@ import ExploreBtn from '@/components/ExploreBtn';
 import { IEvent } from '@/database';
 export default async function Home() {
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-  const events : IEvent[]  = await fetch(`${BASE_URL}/api/events`, { cache: 'no-store' })
+  const events : IEvent[]  = await fetch(`${BASE_URL}/api/events`, { cache: 'no-store', next: {
+    revalidate: 60
+  } })
     .then((res) => res.json())
     .then((data) => data.events);
   return (

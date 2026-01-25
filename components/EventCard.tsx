@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { IEvent } from '@/database';
 
 type EventMode = 'online' | 'offline' | 'hybrid';
 export interface EventDTO {
