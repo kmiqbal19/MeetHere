@@ -5,7 +5,7 @@ import { getAllEvents } from '@/lib/actions/event.actions';
 const EventsPage = async () => {
   const events = await getAllEvents();
   return events?.length > 0 ? (
-    <div className="mt-20 space-y-15">
+    <div className="mt-20 space-y-15 z-10">
       <h3>Upcoming Gatherings</h3>
       <ul className="events">
         {events.map((event: IEvent, idx) => (

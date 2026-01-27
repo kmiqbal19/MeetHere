@@ -21,7 +21,7 @@ export default async function Home() {
       </p>
       <ExploreBtn />
 
-      <div className="mt-20 space-y-[3.75rem]">
+      <div className="mt-20 space-y-12 z-10" >
         <h3>Upcoming Gatherings</h3>
         <ul className="events">
           {events.map((event: IEvent, idx) => (
