@@ -4,7 +4,6 @@ import getSimilarEventsBySlug from '@/lib/actions/event.actions';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 
-
 const EventDetailItem = ({
   iconSrc,
   altText,
@@ -48,11 +47,11 @@ const EventDetailsPage = async ({
   params: Promise<{ slug: string }>;
 }) => {
   const { slug } = await params;
-  const baseUrl =
-  process.env.VERCEL_URL ||
-  'http://localhost:3000';
+  const baseUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : 'http://localhost:3000';
   const response = await fetch(`${baseUrl}/api/events/${slug}`, {
-cache: 'no-store',
+    cache: 'no-store',
   });
   const { event } = await response.json();
   if (!event) return notFound();
@@ -73,7 +72,7 @@ cache: 'no-store',
   const similarEvents = await getSimilarEventsBySlug(slug);
 
   return (
-    <section id="event" className='z-1'>
+    <section id="event" className="z-1">
       <div className="header">
         <h1>Event Description</h1>
         <p className="mt-2">{description}</p>

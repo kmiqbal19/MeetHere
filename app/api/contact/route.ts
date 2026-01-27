@@ -1,6 +1,6 @@
-import Message from "@/database/message.model";
-import connectDB from "@/lib/mongodb";
-import { NextRequest, NextResponse } from "next/server";
+import Message from '@/database/message.model';
+import connectDB from '@/lib/mongodb';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,10 +9,9 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { email, message } = body;
 
-
     if (!email || !message) {
       return NextResponse.json(
-        { error: "Email and message are required" },
+        { error: 'Email and message are required' },
         { status: 400 }
       );
     }
@@ -30,10 +29,10 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("Error creating message:", error);
+    console.error('Error creating message:', error);
 
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: 'Internal Server Error' },
       { status: 500 }
     );
   }

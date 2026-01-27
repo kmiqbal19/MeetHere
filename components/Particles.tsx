@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useEffect, useRef } from 'react';
 import { Renderer, Camera, Geometry, Program, Mesh } from 'ogl';
 
@@ -25,7 +25,7 @@ const hexToRgb = (hex: string): [number, number, number] => {
   if (hex.length === 3) {
     hex = hex
       .split('')
-      .map(c => c + c)
+      .map((c) => c + c)
       .join('');
   }
   const int = parseInt(hex, 16);
@@ -114,7 +114,7 @@ const Particles: React.FC<ParticlesProps> = ({
   cameraDistance = 20,
   disableRotation = false,
   pixelRatio = 1,
-  className
+  className,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -123,7 +123,11 @@ const Particles: React.FC<ParticlesProps> = ({
     const container = containerRef.current;
     if (!container) return;
 
-    const renderer = new Renderer({ dpr: pixelRatio, depth: false, alpha: true });
+    const renderer = new Renderer({
+      dpr: pixelRatio,
+      depth: false,
+      alpha: true,
+    });
     const gl = renderer.gl;
     container.appendChild(gl.canvas);
     gl.clearColor(0, 0, 0, 0);
@@ -155,7 +159,10 @@ const Particles: React.FC<ParticlesProps> = ({
     const positions = new Float32Array(count * 3);
     const randoms = new Float32Array(count * 4);
     const colors = new Float32Array(count * 3);
-    const palette = particleColors && particleColors.length > 0 ? particleColors : defaultColors;
+    const palette =
+      particleColors && particleColors.length > 0
+        ? particleColors
+        : defaultColors;
 
     for (let i = 0; i < count; i++) {
       let x: number, y: number, z: number, len: number;
@@ -167,7 +174,10 @@ const Particles: React.FC<ParticlesProps> = ({
       } while (len > 1 || len === 0);
       const r = Math.cbrt(Math.random());
       positions.set([x * r, y * r, z * r], i * 3);
-      randoms.set([Math.random(), Math.random(), Math.random(), Math.random()], i * 4);
+      randoms.set(
+        [Math.random(), Math.random(), Math.random(), Math.random()],
+        i * 4
+      );
       const col = hexToRgb(palette[Math.floor(Math.random() * palette.length)]);
       colors.set(col, i * 3);
     }
@@ -175,7 +185,7 @@ const Particles: React.FC<ParticlesProps> = ({
     const geometry = new Geometry(gl, {
       position: { size: 3, data: positions },
       random: { size: 4, data: randoms },
-      color: { size: 3, data: colors }
+      color: { size: 3, data: colors },
     });
 
     const program = new Program(gl, {
@@ -186,10 +196,10 @@ const Particles: React.FC<ParticlesProps> = ({
         uSpread: { value: particleSpread },
         uBaseSize: { value: particleBaseSize * pixelRatio },
         uSizeRandomness: { value: sizeRandomness },
-        uAlphaParticles: { value: alphaParticles ? 1 : 0 }
+        uAlphaParticles: { value: alphaParticles ? 1 : 0 },
       },
       transparent: true,
-      depthTest: false
+      depthTest: false,
     });
 
     const particles = new Mesh(gl, { mode: gl.POINTS, geometry, program });
@@ -247,10 +257,12 @@ const Particles: React.FC<ParticlesProps> = ({
     sizeRandomness,
     cameraDistance,
     disableRotation,
-    pixelRatio
+    pixelRatio,
   ]);
 
-  return <div ref={containerRef} className={`relative w-full h-full ${className}`} />;
+  return (
+    <div ref={containerRef} className={`relative w-full h-full ${className}`} />
+  );
 };
 
 export default Particles;

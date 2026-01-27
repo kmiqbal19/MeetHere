@@ -3,15 +3,15 @@ import ExploreBtn from '@/components/ExploreBtn';
 import { IEvent } from '@/database';
 
 export default async function Home() {
- const baseUrl =
-  process.env.VERCEL_URL ||
-  'http://localhost:3000';
+  const baseUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : 'http://localhost:3000';
 
-const events: IEvent[] = await fetch(`${baseUrl}/api/events`, {
-  cache: 'no-store',
-})
-  .then(res => res.json())
-  .then(data => data.events);
+  const events: IEvent[] = await fetch(`${baseUrl}/api/events`, {
+    cache: 'no-store',
+  })
+    .then((res) => res.json())
+    .then((data) => data.events);
   return (
     <section>
       <h1 className="text-center">
@@ -22,7 +22,7 @@ const events: IEvent[] = await fetch(`${baseUrl}/api/events`, {
       </p>
       <ExploreBtn />
 
-      <div className="mt-20 space-y-12 z-10" >
+      <div className="mt-20 space-y-12 z-10">
         <h3>Upcoming Gatherings</h3>
         <ul className="events">
           {events.map((event: IEvent, idx) => (

@@ -31,7 +31,7 @@ const RippleGrid: React.FC<Props> = ({
   opacity = 1.0,
   gridRotation = 0,
   mouseInteraction = true,
-  mouseInteractionRadius = 1
+  mouseInteractionRadius = 1,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const mousePositionRef = useRef({ x: 0.5, y: 0.5 });
@@ -45,13 +45,17 @@ const RippleGrid: React.FC<Props> = ({
     const hexToRgb = (hex: string): [number, number, number] => {
       const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
       return result
-        ? [parseInt(result[1], 16) / 255, parseInt(result[2], 16) / 255, parseInt(result[3], 16) / 255]
+        ? [
+            parseInt(result[1], 16) / 255,
+            parseInt(result[2], 16) / 255,
+            parseInt(result[3], 16) / 255,
+          ]
         : [1, 1, 1];
     };
 
     const renderer = new Renderer({
       dpr: Math.min(window.devicePixelRatio, 2),
-      alpha: true
+      alpha: true,
     });
     const gl = renderer.gl;
     gl.enable(gl.BLEND);
@@ -177,7 +181,7 @@ void main() {
       mouseInteraction: { value: mouseInteraction },
       mousePosition: { value: [0.5, 0.5] },
       mouseInfluence: { value: 0 },
-      mouseInteractionRadius: { value: mouseInteractionRadius }
+      mouseInteractionRadius: { value: mouseInteractionRadius },
     };
 
     uniformsRef.current = uniforms;
@@ -222,14 +226,20 @@ void main() {
       uniforms.iTime.value = t * 0.001;
 
       const lerpFactor = 0.1;
-      mousePositionRef.current.x += (targetMouseRef.current.x - mousePositionRef.current.x) * lerpFactor;
-      mousePositionRef.current.y += (targetMouseRef.current.y - mousePositionRef.current.y) * lerpFactor;
+      mousePositionRef.current.x +=
+        (targetMouseRef.current.x - mousePositionRef.current.x) * lerpFactor;
+      mousePositionRef.current.y +=
+        (targetMouseRef.current.y - mousePositionRef.current.y) * lerpFactor;
 
       const currentInfluence = uniforms.mouseInfluence.value;
       const targetInfluence = mouseInfluenceRef.current;
-      uniforms.mouseInfluence.value += (targetInfluence - currentInfluence) * 0.05;
+      uniforms.mouseInfluence.value +=
+        (targetInfluence - currentInfluence) * 0.05;
 
-      uniforms.mousePosition.value = [mousePositionRef.current.x, mousePositionRef.current.y];
+      uniforms.mousePosition.value = [
+        mousePositionRef.current.x,
+        mousePositionRef.current.y,
+      ];
 
       renderer.render({ scene: mesh });
       requestAnimationFrame(render);
@@ -241,8 +251,14 @@ void main() {
       window.removeEventListener('resize', resize);
       if (mouseInteraction && containerRef.current) {
         containerRef.current.removeEventListener('mousemove', handleMouseMove);
-        containerRef.current.removeEventListener('mouseenter', handleMouseEnter);
-        containerRef.current.removeEventListener('mouseleave', handleMouseLeave);
+        containerRef.current.removeEventListener(
+          'mouseenter',
+          handleMouseEnter
+        );
+        containerRef.current.removeEventListener(
+          'mouseleave',
+          handleMouseLeave
+        );
       }
       renderer.gl.getExtension('WEBGL_lose_context')?.loseContext();
       containerRef.current?.removeChild(gl.canvas);
@@ -255,7 +271,11 @@ void main() {
     const hexToRgb = (hex: string): [number, number, number] => {
       const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
       return result
-        ? [parseInt(result[1], 16) / 255, parseInt(result[2], 16) / 255, parseInt(result[3], 16) / 255]
+        ? [
+            parseInt(result[1], 16) / 255,
+            parseInt(result[2], 16) / 255,
+            parseInt(result[3], 16) / 255,
+          ]
         : [1, 1, 1];
     };
 
@@ -283,10 +303,15 @@ void main() {
     opacity,
     gridRotation,
     mouseInteraction,
-    mouseInteractionRadius
+    mouseInteractionRadius,
   ]);
 
-  return <div ref={containerRef} className="w-full h-full relative overflow-hidden [&_canvas]:block" />;
+  return (
+    <div
+      ref={containerRef}
+      className="w-full h-full relative overflow-hidden [&_canvas]:block"
+    />
+  );
 };
 
 export default RippleGrid;

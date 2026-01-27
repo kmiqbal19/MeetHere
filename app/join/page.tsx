@@ -6,10 +6,10 @@ const JoinPage = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-const [isSuccess, setIsSuccess] = useState(false);
-const baseUrl =
-  process.env.VERCEL_URL ||
-  'http://localhost:3000';
+  const [isSuccess, setIsSuccess] = useState(false);
+  const baseUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : 'http://localhost:3000';
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -31,7 +31,7 @@ const baseUrl =
 
       setEmail('');
       setMessage('');
-        setIsSuccess(true);
+      setIsSuccess(true);
     } catch (error) {
       console.error(error);
     } finally {
@@ -45,8 +45,10 @@ const baseUrl =
         onSubmit={handleSubmit}
         className="w-full max-w-md bg-transparent rounded-xl border border-border p-6 shadow-sm flex flex-col gap-5"
       >
-        <h2 className="text-2xl font-semibold text-center">Share your interest and JOIN US!</h2>
-{isSuccess && (
+        <h2 className="text-2xl font-semibold text-center">
+          Share your interest and JOIN US!
+        </h2>
+        {isSuccess && (
           <div className="rounded-md bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-700">
             ✅ Your message has been sent successfully!
           </div>
