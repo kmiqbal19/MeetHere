@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-const VERCEL_URL = 'https://meet-here-lime.vercel.app/';
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || VERCEL_URL;
+
 const JoinPage = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
@@ -15,7 +14,7 @@ const [isSuccess, setIsSuccess] = useState(false);
     setIsSuccess(false);
 
     try {
-      const res = await fetch(`${BASE_URL}/api/contact`, {
+      const res = await fetch(`/api/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

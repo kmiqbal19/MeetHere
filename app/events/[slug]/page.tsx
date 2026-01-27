@@ -3,8 +3,7 @@ import EventCard, { EventDTO } from '@/components/EventCard';
 import getSimilarEventsBySlug from '@/lib/actions/event.actions';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-const VERCEL_URL = 'https://meet-here-lime.vercel.app/';
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || VERCEL_URL;
+
 
 const EventDetailItem = ({
   iconSrc,
@@ -49,10 +48,8 @@ const EventDetailsPage = async ({
   params: Promise<{ slug: string }>;
 }) => {
   const { slug } = await params;
-  const response = await fetch(`${BASE_URL}/api/events/${slug}`, {
-    next: {
-      revalidate: 60,
-    },
+  const response = await fetch(`/api/events/${slug}`, {
+cache: 'no-store',
   });
   const { event } = await response.json();
   if (!event) return notFound();
@@ -71,7 +68,7 @@ const EventDetailsPage = async ({
   } = event;
   const bookings = 10;
   const similarEvents = await getSimilarEventsBySlug(slug);
-  console.log('Similar Events:', similarEvents);
+
   return (
     <section id="event" className='z-1'>
       <div className="header">
