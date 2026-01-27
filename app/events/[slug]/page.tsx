@@ -1,6 +1,6 @@
 import BookEvent from '@/components/BookEvent';
 import EventCard, { EventDTO } from '@/components/EventCard';
-import getSimilarEventsBySlug from '@/lib/actions/event.actions';
+import getSimilarEventsBySlug, { getEventBySlug } from '@/lib/actions/event.actions';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 
@@ -47,13 +47,7 @@ const EventDetailsPage = async ({
   params: Promise<{ slug: string }>;
 }) => {
   const { slug } = await params;
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : 'http://localhost:3000';
-  const response = await fetch(`${baseUrl}/api/events/${slug}`, {
-    cache: 'no-store',
-  });
-  const { event } = await response.json();
+  const event = await getEventBySlug(slug);
   if (!event) return notFound();
   const {
     description,
