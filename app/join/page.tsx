@@ -1,39 +1,25 @@
 'use client';
 
-import React, { useState } from 'react';
+import { submitContact } from '@/lib/actions/message.action';
+import  { useState } from 'react';
+
 
 const JoinPage = () => {
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : 'http://localhost:3000';
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const [error, setError] = useState<string | null>(null);
 
+  const handleSubmit = async (formData: FormData) => {
     setIsSubmitting(true);
     setIsSuccess(false);
+    setError(null);
 
     try {
-      const res = await fetch(`${baseUrl}/api/contact`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, message }),
-      });
-
-      if (!res.ok) {
-        throw new Error('Failed to send message');
-      }
-
-      setEmail('');
-      setMessage('');
+      await submitContact(formData);
       setIsSuccess(true);
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      setError('Failed to send message');
+      console.error('Error submitting contact form:', err);
     } finally {
       setIsSubmitting(false);
     }
@@ -42,28 +28,35 @@ const JoinPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center px-5 z-1">
       <form
-        onSubmit={handleSubmit}
+        action={handleSubmit}
         className="w-full max-w-md bg-transparent rounded-xl border border-border p-6 shadow-sm flex flex-col gap-5"
       >
         <h2 className="text-2xl font-semibold text-center">
           Share your interest and JOIN US!
         </h2>
+
         {isSuccess && (
           <div className="rounded-md bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-700">
             ✅ Your message has been sent successfully!
           </div>
         )}
+
+        {error && (
+          <div className="rounded-md bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+            {error}
+          </div>
+        )}
+
         <div className="flex flex-col gap-2">
           <label htmlFor="email" className="text-sm font-medium">
             Email
           </label>
           <input
             id="email"
+            name="email"
             type="email"
             required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="rounded-md border border-border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-ring"
+            className="rounded-md border border-border px-4 py-2"
             placeholder="you@example.com"
           />
         </div>
@@ -74,11 +67,10 @@ const JoinPage = () => {
           </label>
           <textarea
             id="message"
+            name="message"
             required
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
             rows={4}
-            className="rounded-md border border-border px-4 py-2 resize-none focus:outline-none focus:ring-2 focus:ring-ring"
+            className="rounded-md border border-border px-4 py-2 resize-none"
             placeholder="Write your interest here..."
           />
         </div>
@@ -86,7 +78,7 @@ const JoinPage = () => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="mt-2 cursor-pointer rounded-md bg-primary px-4 py-2 font-semibold text-white transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+          className="mt-2 rounded-md bg-primary px-4 py-2 font-semibold text-white disabled:opacity-50"
         >
           {isSubmitting ? 'Sending...' : 'Submit'}
         </button>
