@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+
 const ExploreBtn = () => {
   return (
     <button
@@ -8,8 +9,8 @@ const ExploreBtn = () => {
       id="explore-btn"
       onClick={() => console.log('CLICKED')}
     >
-      <a href="#events">
-        Explore Events
+      <a href="/join">
+        Get Involved
         <Image
           src="/icons/arrow-down.svg"
           alt="down arrow"

@@ -5,10 +5,18 @@ const Navbar = () => {
     <header>
       <nav>
         <Link href="/" className="logo">
-          <Image src="/icons/logo.png" alt="logo" width={24} height={24} />
-          <p>DevEvent</p>
+          <Image
+            src="/icons/logo.png"
+            alt="logo"
+            width={60}
+            height={30}
+            style={{
+              filter: 'invert(100%)',
+            }}
+          />
+          <p>MeetHere</p>
         </Link>
-        <ul>
+        <ul className="list-none">
           <li>
             <Link href="/">Home</Link>
           </li>
@@ -16,7 +24,7 @@ const Navbar = () => {
             <Link href="/events">Events</Link>
           </li>
           <li>
-            <Link href="/create-event">Create Event</Link>
+            <Link href="/join">Join Us</Link>
           </li>
         </ul>
       </nav>
