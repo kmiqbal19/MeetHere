@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Schibsted_Grotesk, Martian_Mono } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar';
-import { PostHogProvider } from './providers';
+// import { PostHogProvider } from './providers';
 import Particles from '@/components/Particles';
 
 const schibstedGrotesk = Schibsted_Grotesk({
@@ -31,7 +31,7 @@ export default function RootLayout({
       <body
         className={`${schibstedGrotesk.variable} ${martianMono.variable} min-h-screen antialiased`}
       >
-        <PostHogProvider>
+        {/* <PostHogProvider> */}
           <Navbar />
 
           <div
@@ -55,7 +55,7 @@ export default function RootLayout({
             />
           </div>
           <main>{children}</main>
-        </PostHogProvider>
+        {/* </PostHogProvider> */}
       </body>
     </html>
   );
